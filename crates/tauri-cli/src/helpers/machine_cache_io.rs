@@ -8,12 +8,14 @@ use std::{
   path::Path,
 };
 
+#[allow(dead_code)]
 pub(crate) fn machine_cache_file_is_candidate(path: &Path, max_bytes: u64) -> bool {
   fs::metadata(path)
     .map(|metadata| metadata.is_file() && metadata.len() <= max_bytes)
     .unwrap_or(false)
 }
 
+#[allow(dead_code)]
 pub(crate) fn read_machine_file_bounded(path: &Path, max_bytes: u64) -> Option<Vec<u8>> {
   let mut file = File::open(path).ok()?;
   let mut bytes = Vec::new();
