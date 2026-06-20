@@ -105,6 +105,10 @@ jobs:
           command: |
             $env:Path = "$env:USERPROFILE\.cargo\bin;$env:Path"
             $ErrorActionPreference = "Stop"
+            $env:CIRCLECI_GH_TOKEN = [System.Environment]::GetEnvironmentVariable("CIRCLECI_GH_TOKEN")
+            git config --global url."https://x-access-token:$env:CIRCLECI_GH_TOKEN@github.com/".insteadOf "https://github.com/"
+            git config --global url."https://x-access-token:$env:CIRCLECI_GH_TOKEN@github.com/".insteadOf "ssh://git@github.com/"
+            $env:CARGO_NET_GIT_FETCH_WITH_CLI = "true"
             cargo build --locked --release -p tauri-cli --bin cargo-tauri
             New-Item -ItemType Directory -Path dist -Force | Out-Null
             Copy-Item -LiteralPath "target\release\cargo-tauri.exe" -Destination "dist\dx-native-windows-x86_64.exe"
@@ -185,6 +189,7 @@ workflows:
 # workflows:
 #   linux-release: ...
 #   macos-release: ...
+
 
 
 
