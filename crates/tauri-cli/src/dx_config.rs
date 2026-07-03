@@ -41,6 +41,25 @@ impl NativeDxConfig {
         Ok(())
     }
 
+    pub fn global_sr_dir(&self) -> PathBuf {
+        dirs::cache_dir().map(|b| b.join("dx").join("native")).unwrap_or_else(|| PathBuf::from("~/.cache/dx/native"))
+    }
+
+    pub fn write_global_sr(&self, name: &str, entries: &[(&str, &str)]) -> std::io::Result<()> {
+        let path = self.global_sr_dir().join(format!("{name}.sr"));
+        std::fs::create_dir_all(path.parent().unwrap())?;
+        let mut buf: Vec<u8> = Vec::new();
+        for (key, value) in entries {
+            write!(buf, "{key}=")?;
+            write_llm_value(&mut buf, value)?;
+            buf.push(b'\n');
+        }
+        let tmp = path.with_extension("sr.tmp");
+        std::fs::write(&tmp, &buf)?;
+        std::fs::rename(&tmp, path)?;
+        Ok(())
+    }
+
     pub fn read_status(&self, name: &str) -> Option<HashMap<String, String>> {
         let path = self.sr_path(name);
         let source = std::fs::read_to_string(&path).ok()?;

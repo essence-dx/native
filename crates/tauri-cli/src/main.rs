@@ -19,6 +19,7 @@ fn main() {
 
   let _dx = dx_config::NativeDxConfig::load();
   _dx.ensure_dirs();
+  let _ = _dx.write_global_sr("startup", &[("bin", "native")]);
 
   let mut args = args_os().peekable();
   let bin_name = match args
