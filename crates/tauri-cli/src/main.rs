@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
+mod dx_config;
+
 #[cfg(not(any(target_os = "macos", target_os = "linux", windows)))]
 fn main() {
   println!("The Tauri CLI is not supported on this platform");
@@ -14,6 +16,9 @@ fn main() {
   use std::ffi::OsStr;
   use std::path::Path;
   use std::process::exit;
+
+  let _dx = dx_config::NativeDxConfig::load();
+  _dx.ensure_dirs();
 
   let mut args = args_os().peekable();
   let bin_name = match args
