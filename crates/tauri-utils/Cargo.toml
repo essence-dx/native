@@ -56,7 +56,7 @@ serde-untagged = "0.1"
 uuid = { version = "1", features = ["serde"] }
 http = "1"
 plist = "1"
-serializer = { package = "dx-serializer", version = "0.1.0", path = "../../../serializer", default-features = false, features = [
+serializer = { package = "dx-serializer", version = "1.0.0", path = "../../../serializer", default-features = false, features = [
   "typed-cache",
 ], optional = true }
 rkyv = { version = "0.8", features = ["bytecheck"], optional = true }
